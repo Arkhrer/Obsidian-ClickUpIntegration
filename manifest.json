@@ -2,7 +2,7 @@
 	"id": "clickup-integration",
 	"name": "ClickUp Integration",
 	"version": "0.0.1",
-	"minAppVersion": "1.11.4",
+	"minAppVersion": "1.13.2",
 	"description": "Mirror your ClickUp tasks into a note and update them from Obsidian.",
 	"author": "Arkhrer",
 	"isDesktopOnly": false

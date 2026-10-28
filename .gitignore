@@ -2,6 +2,7 @@
 .vscode
 .idea
 *.iml
+CLAUDE.md
 
 # npm
 node_modules
