@@ -1,0 +1,9 @@
+{
+	"id": "clickup-integration",
+	"name": "ClickUp Integration",
+	"version": "0.0.1",
+	"minAppVersion": "1.11.4",
+	"description": "Espelha as tarefas do ClickUp numa nota do vault e permite atualizá-las a partir do Obsidian.",
+	"author": "Arkhrer",
+	"isDesktopOnly": false
+}
