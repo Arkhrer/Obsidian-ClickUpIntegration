@@ -1,69 +1,71 @@
-# ClickUp Integration (plugin pessoal do Obsidian)
+# ClickUp Integration for Obsidian
 
-Traz as tarefas do ClickUp atribuídas a mim para uma nota do vault de trabalho e, mais adiante, permite atualizá-las sem sair do Obsidian. Não é publicado na loja de plugins.
+An Obsidian plugin that mirrors your ClickUp tasks into a note in your vault and, later on, lets you update them without leaving Obsidian.
 
-## Requisitos
+> Status: early development (0.0.x). Not published in the community plugin directory.
 
-- Node.js 20.11 ou mais novo, com npm
-- Obsidian 1.11.4 ou mais novo (por causa do `app.secretStorage`)
-- CLI do Obsidian registrado, para o `npm run reload` (opcional)
+## Requirements
 
-## Começar
+- Node.js 20.11 or newer, with npm
+- Obsidian 1.11.4 or newer (needed for `app.secretStorage`)
+- The Obsidian CLI registered, for `npm run reload` (optional)
+
+## Getting started
 
 ```bash
-npm install      # dependências de desenvolvimento
-npm run dev      # cria os links no vault de teste e compila em modo watch
+npm install      # dev dependencies
+npm run dev      # links the build into the test vault and compiles in watch mode
 ```
 
-Abra `test-vault/` no Obsidian (**Abrir pasta como vault**), ative os plugins da comunidade e ligue o **ClickUp Integration**. Depois de mudar o código, com o `dev` rodando:
+Open `test-vault/` in Obsidian (**Open folder as vault**), turn on community plugins and enable **ClickUp Integration**. After changing the code, with `dev` running:
 
 ```bash
-npm run reload   # recarrega o plugin no Obsidian aberto
+npm run reload   # reloads the plugin in the running Obsidian
 ```
 
 ## Scripts
 
-| Comando | O que faz |
+| Command | What it does |
 | --- | --- |
-| `npm run dev` | Links no vault de teste + build em modo watch, com sourcemap |
-| `npm run build` | Checagem de tipos + build de produção (minificado) |
-| `npm run typecheck` | Só a checagem de tipos |
-| `npm run lint` | ESLint com as regras oficiais do Obsidian |
-| `npm run link` | Recria os links do vault de teste |
+| `npm run dev` | Links the build into the test vault + watch build with sourcemaps |
+| `npm run build` | Type check + production build (minified) |
+| `npm run typecheck` | Type check only |
+| `npm run lint` | ESLint with the official Obsidian rules |
+| `npm run link` | Recreates the test-vault links |
 | `npm run reload` | `obsidian plugin:reload id=clickup-integration` |
-| `npm version patch` | Sobe a versão no `package.json`, `manifest.json` e `versions.json` |
+| `npm version patch` | Bumps the version in `package.json`, `manifest.json` and `versions.json` |
 
-## Estrutura
+## Project layout
 
 ```
-src/main.ts               ciclo de vida do plugin (onload/onunload)
-scripts/link-test-vault.mjs  links do build para o vault de teste
-test-vault/               vault descartável para desenvolvimento
-docs/api-clickup.md       anotações sobre a API do ClickUp
-esbuild.config.mjs        empacotamento (TypeScript → main.js)
-eslint.config.mts         lint com eslint-plugin-obsidianmd
-tsconfig.json             opções do TypeScript (modo strict)
-CLAUDE.md                 contexto para sessões com o Claude
-version-bump.mjs          sincroniza versão entre package.json e manifest.json
+src/main.ts                  plugin lifecycle (onload/onunload) and command registration
+scripts/link-test-vault.mjs  links the build output into the test vault
+test-vault/                  disposable vault for development
+docs/clickup-api.md          notes on the ClickUp API
+esbuild.config.mjs           bundling (TypeScript → main.js)
+eslint.config.mts            linting with eslint-plugin-obsidianmd
+tsconfig.json                TypeScript options (strict mode)
+version-bump.mjs             keeps package.json and manifest.json versions in sync
+CLAUDE.md                    context for AI-assisted sessions
 ```
 
-A base veio do [obsidian-sample-plugin](https://github.com/obsidianmd/obsidian-sample-plugin) oficial (versão de 02/08/2026).
+Based on the official [obsidian-sample-plugin](https://github.com/obsidianmd/obsidian-sample-plugin) (August 2026 version).
 
-## Instalar no vault de trabalho
+## Manual installation
 
-Depois de `npm run build`, copiar `main.js`, `manifest.json` e `styles.css` para
-`~/Documentos/Obsidian/Trabalho/.obsidian/plugins/clickup-integration/` e ativar o plugin.
+Run `npm run build`, then copy `main.js`, `manifest.json` and `styles.css` to
+`<your vault>/.obsidian/plugins/clickup-integration/` and enable the plugin.
 
-## Segurança
+## Security
 
-- O token do ClickUp fica no armazenamento de segredos do Obsidian (chaveiro do sistema), **nunca** no `data.json` nem no repositório.
-- `data.json` está no `.gitignore`.
-- Toda chamada de rede passa pelo `requestUrl` do Obsidian e só vai para `api.clickup.com`.
+- The ClickUp token is kept in Obsidian's secret storage (the OS keychain), **never** in `data.json` or in the repository.
+- `data.json` is git-ignored.
+- All network calls go through Obsidian's `requestUrl` and only to `api.clickup.com`.
 
-## Roteiro
+## Roadmap
 
-1. [x] Explorar a API com `curl` ([anotações](docs/api-clickup.md))
-2. [ ] Plugin mínimo: comando "Atualizar ClickUp" que escreve `ClickUp.md`
-3. [ ] Configurações: token (segredo), workspace, filtros, intervalo
-4. [ ] Volta: mudar status e abrir o cartão a partir do Obsidian
-5. [ ] Opcional: vista própria ou integração com o Task Board
+1. [x] Explore the API with `curl` ([notes](docs/clickup-api.md))
+2. [ ] Minimal plugin: an "Update ClickUp" command that writes `ClickUp.md`
+3. [ ] Settings: token (secret), workspace, filters, refresh interval
+4. [ ] Write-back: change status and open the card from Obsidian
+5. [ ] Optional: a dedicated view or Task Board integration

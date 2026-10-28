@@ -1,10 +1,12 @@
-// Cria links simbólicos dos artefatos do build dentro do vault de teste,
-// para o Obsidian carregar o plugin direto da pasta do repositório.
-import { mkdirSync, symlinkSync, rmSync, lstatSync, writeFileSync, existsSync } from 'node:fs';
+// Symlinks the build output into the test vault so Obsidian loads the plugin
+// straight from the repository, and makes sure the plugin is enabled there.
+import { existsSync, lstatSync, mkdirSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
 import { join, relative, resolve } from 'node:path';
 
+const PLUGIN_ID = 'clickup-integration';
 const root = resolve(import.meta.dirname, '..');
-const pluginDir = join(root, 'test-vault', '.obsidian', 'plugins', 'clickup-integration');
+const configDir = join(root, 'test-vault', '.obsidian');
+const pluginDir = join(configDir, 'plugins', PLUGIN_ID);
 mkdirSync(pluginDir, { recursive: true });
 
 for (const file of ['main.js', 'manifest.json', 'styles.css']) {
@@ -13,9 +15,13 @@ for (const file of ['main.js', 'manifest.json', 'styles.css']) {
 	try {
 		if (lstatSync(link)) rmSync(link);
 	} catch {
-		/* link ainda não existe */
+		// the link does not exist yet
 	}
 	if (file === 'main.js' && !existsSync(target)) writeFileSync(target, '');
 	symlinkSync(relative(pluginDir, target), link);
 }
-console.log(`links criados em ${relative(root, pluginDir)}`);
+
+const enabledPlugins = join(configDir, 'community-plugins.json');
+if (!existsSync(enabledPlugins)) writeFileSync(enabledPlugins, JSON.stringify([PLUGIN_ID], null, '\t') + '\n');
+
+console.log(`Links created in ${relative(root, pluginDir)}`);

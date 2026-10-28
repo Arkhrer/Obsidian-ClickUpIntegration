@@ -1,6 +1,7 @@
 import obsidianmd from 'eslint-plugin-obsidianmd';
 import globals from 'globals';
 import { globalIgnores, defineConfig } from 'eslint/config';
+import { DEFAULT_BRANDS } from 'eslint-plugin-obsidianmd/dist/lib/rules/ui/brands.js';
 
 export default defineConfig(
 	globalIgnores([
@@ -31,4 +32,10 @@ export default defineConfig(
 		},
 	},
 	...obsidianmd.configs.recommended,
+	{
+		rules: {
+			// Keep brand names such as "ClickUp" as written.
+			'obsidianmd/ui/sentence-case': ['warn', { brands: [...DEFAULT_BRANDS, 'ClickUp'] }],
+		},
+	},
 );

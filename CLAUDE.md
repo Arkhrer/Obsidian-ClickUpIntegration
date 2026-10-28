@@ -1,23 +1,29 @@
-# Contexto para o Claude
+# Context for Claude
 
-Plugin pessoal do Obsidian (TypeScript) que integra as tarefas do ClickUp do Arkhrer ao vault de **trabalho** (`~/Documentos/Obsidian/Trabalho`). Não é publicado.
+Obsidian plugin (TypeScript) that brings ClickUp tasks into an Obsidian vault. Maintained by Arkhrer; it may be opened to outside contributions later.
 
-## Como trabalhar neste repositório
+## Language
 
-- **Modo aprendizado.** O Arkhrer está aprendendo TypeScript e a API do Obsidian (vem de C/C++ e Python). Construa o código **junto com ele, passo a passo**, explicando cada conceito, em vez de entregar arquivos inteiros prontos. Etapas pequenas, uma ideia por vez.
-- Responda em português do Brasil.
-- Siga o roteiro do `README.md` e atualize as caixas quando uma etapa terminar.
-- Anotações sobre a API do ClickUp ficam em `docs/api-clickup.md`; atualize quando descobrir algo novo.
+- **Everything in the repository is in English**: code, identifiers, comments, UI strings, docs, commit messages and PR descriptions.
+- Conversation with Arkhrer happens in Brazilian Portuguese.
 
-## Regras técnicas
+## How to work in this repository
 
-- Estrutura: `src/main.ts` só cuida do ciclo de vida e do registro de comandos. Lógica em módulos (`src/clickup/`, `src/render/`, `src/settings.ts` etc.).
-- Rede só via `requestUrl` do `obsidian` (funciona no celular e não esbarra em CORS). Nada de `fetch`.
-- Token só em `app.secretStorage` (ID `clickup-token`). Nunca em `data.json`, log ou mensagem de erro.
-- Escrita em arquivo via `app.vault.process` (atômico), não `read` + `modify`.
-- Sem dependências de runtime além do `obsidian`, salvo necessidade clara.
-- Antes de concluir uma mudança: `npm run typecheck` e `npm run lint`.
+- **Learning mode.** Arkhrer is learning TypeScript and the Obsidian API (background in C/C++ and Python). Build the code **with him, step by step**, explaining each concept, instead of handing over finished files. Small steps, one idea at a time. Review what he writes before moving on.
+- Follow the roadmap in `README.md` and tick the boxes when a step is done.
+- ClickUp API notes live in `docs/clickup-api.md`; update them when something new is learned.
+- Commits follow Conventional Commits (`feat:`, `fix:`, `chore:`, `docs:`…).
 
-## Convenções do vault de destino
+## Technical rules
 
-Propriedades em minúsculas e sem acento: `tipo`, `status`, `criado`, `atualizado`, `fonte`, `origem`, `projeto`, `clickup`. A nota gerada leva `origem: clickup`. Tarefas do vault usam o formato com emoji do plugin Tasks e a tag `#t`.
+- `src/main.ts` only handles the lifecycle and command registration. Logic goes into modules (`src/clickup/`, `src/render/`, `src/settings.ts`, …).
+- Network access only through `requestUrl` from `obsidian` (works on mobile, no CORS issues). No `fetch`.
+- The token lives only in `app.secretStorage` (ID `clickup-token`). Never in `data.json`, logs or error messages.
+- File writes through `app.vault.process` (atomic), not `read` + `modify`.
+- No runtime dependencies besides `obsidian` unless clearly justified.
+- Pass methods as callbacks with arrow functions (`() => this.update()`), never as bare references.
+- Before finishing a change: `npm run typecheck` and `npm run lint`.
+
+## Conventions of the target vault
+
+Note properties are lowercase Portuguese names without accents (`tipo`, `status`, `criado`, `atualizado`, `fonte`, `origem`, `projeto`, `clickup`); they belong to the user's vault, not to the code, and should become configurable. The generated note carries `origem: clickup`. Vault tasks use the Tasks plugin emoji format and the `#t` tag.

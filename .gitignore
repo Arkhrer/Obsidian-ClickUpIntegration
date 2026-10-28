@@ -1,4 +1,4 @@
-# editores
+# editors
 .vscode
 .idea
 *.iml
@@ -6,21 +6,19 @@
 # npm
 node_modules
 
-# saída do build (vai para releases, não para o repositório)
+# build output (shipped through releases, not the repository)
 main.js
 *.map
 
-# configuração do plugin gravada pelo Obsidian (nunca versionar: pode conter dados do ClickUp)
+# plugin settings written by Obsidian (never commit: may contain ClickUp data)
 data.json
 
-# vault de teste: só a estrutura é versionada
-test-vault/.obsidian/*
-!test-vault/.obsidian/app.json
-!test-vault/.obsidian/community-plugins.json
+# test vault: Obsidian rewrites its config, and the generated note holds real data
+test-vault/.obsidian
 test-vault/.trash
 test-vault/ClickUp.md
 
-# testes manuais da API com curl
+# local API experiments
 *.local.json
 
 .DS_Store

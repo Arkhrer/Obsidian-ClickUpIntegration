@@ -2,7 +2,7 @@
 	"name": "obsidian-clickup-integration",
 	"version": "0.0.1",
 	"private": true,
-	"description": "Plugin pessoal do Obsidian para integrar tarefas do ClickUp.",
+	"description": "Obsidian plugin that integrates ClickUp tasks.",
 	"main": "main.js",
 	"type": "module",
 	"scripts": {
