@@ -1,5 +1,6 @@
 import { Notice, Plugin } from 'obsidian';
 import { ClickUpSettingsTab, DEFAULT_SETTINGS, type ClickUpSettings } from './settings';
+import { ClickUpClient } from './clickup/client';
 
 export default class ClickUpIntegrationPlugin extends Plugin {
 	settings!: ClickUpSettings;
@@ -28,6 +29,14 @@ export default class ClickUpIntegrationPlugin extends Plugin {
 	async update(): Promise<void> {
 		new Notice('ClickUp: updating...');
 		try {
+			const token = this.app.secretStorage.getSecret(this.settings.tokenSecret);
+			if (token === null) {
+				throw new Error('Set your ClickUp API token in the plugin settings.');
+			}
+			const client = new ClickUpClient(token);
+			const user = await client.getUser();
+			new Notice(`ClickUp: connected as ${user.username}`);
+
 			// TODO: fetch tasks from ClickUp
 		} catch (error) {
 			new Notice(`ClickUp: update failed (${error instanceof Error ? error.message : String(error)})`);
