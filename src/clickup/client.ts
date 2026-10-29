@@ -1,4 +1,5 @@
 import { requestUrl } from 'obsidian';
+import { ClickUpTask, ClickUpTeam } from './types';
 
 const API_BASE = 'https://api.clickup.com/api/v2';
 
@@ -45,5 +46,23 @@ export class ClickUpClient {
 	async getUser(): Promise<ClickUpUser> {
 		const body = await this.get<{ user: ClickUpUser }>('/user');
 		return body.user;
+	}
+
+	async getTeams(): Promise<ClickUpTeam[]> {
+		const body = await this.get<{ teams: ClickUpTeam[] }>('/team');
+		return body.teams;
+	}
+
+	async getTasks(teamId: string, userId: number): Promise<ClickUpTask[]> {
+		const tasks: ClickUpTask[] = [];
+		for (let page = 0; ; page++) {
+			const params = new URLSearchParams({ page: String(page), subtasks: 'true' });
+			params.append('assignees[]', String(userId));
+			const body = await this.get<{ tasks: ClickUpTask[]; last_page: boolean }>(
+				`/team/${teamId}/task?${params.toString()}`,
+			);
+			tasks.push(...body.tasks);
+			if (body.last_page) return tasks;
+		}
 	}
 }

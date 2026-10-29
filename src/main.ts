@@ -35,9 +35,11 @@ export default class ClickUpIntegrationPlugin extends Plugin {
 			}
 			const client = new ClickUpClient(token);
 			const user = await client.getUser();
-			new Notice(`ClickUp: connected as ${user.username}`);
-
-			// TODO: fetch tasks from ClickUp
+			const teams = await client.getTeams();
+			const team = teams[0];
+			if (!team) throw new Error('No ClickUp workspaces found for this token.');
+			const tasks = await client.getTasks(team.id, user.id);
+			new Notice(`ClickUp: ${tasks.length} tasks found from ${team.name}.`);
 		} catch (error) {
 			new Notice(`ClickUp: update failed (${error instanceof Error ? error.message : String(error)})`);
 		}
