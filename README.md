@@ -64,7 +64,7 @@ Run `npm run build`, then copy `main.js`, `manifest.json` and `styles.css` to
 ## Roadmap
 
 1. [X] Explore the API with `curl` ([notes](docs/clickup-api.md))
-2. [ ] Minimal plugin: an "Update ClickUp" command that writes `ClickUp.md`
+2. [X] Minimal plugin: an "Update ClickUp" command that writes `ClickUp.md`
 3. [ ] Settings: token (secret), workspace, filters, refresh interval
 4. [ ] Write-back: change status and open the card from Obsidian
 5. [ ] Optional: a dedicated view or Task Board integration
