@@ -2,6 +2,7 @@ import { Notice, Plugin } from 'obsidian';
 import { ClickUpSettingsTab, DEFAULT_SETTINGS, type ClickUpSettings } from './settings';
 import { ClickUpClient } from './clickup/client';
 import { renderNote } from './render/note';
+import { writeMirrorNote } from './vault/mirror';
 
 export default class ClickUpIntegrationPlugin extends Plugin {
 	settings!: ClickUpSettings;
@@ -40,8 +41,8 @@ export default class ClickUpIntegrationPlugin extends Plugin {
 			const team = teams[0];
 			if (!team) throw new Error('No ClickUp workspaces found for this token.');
 			const tasks = await client.getTasks(team.id, user.id);
-			console.log(renderNote(tasks));
-			new Notice(`ClickUp: ${tasks.length} tasks found from ${team.name}.`);
+			await writeMirrorNote(this.app, this.settings.notePath, renderNote(tasks));
+			new Notice(`ClickUp: ${tasks.length} tasks written to ${this.settings.notePath}.`);
 		} catch (error) {
 			new Notice(`ClickUp: update failed (${error instanceof Error ? error.message : String(error)})`);
 		}

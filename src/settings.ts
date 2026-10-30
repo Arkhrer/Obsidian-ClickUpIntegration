@@ -1,4 +1,4 @@
-import { PluginSettingTab, SettingDefinitionItem } from 'obsidian';
+import { normalizePath, PluginSettingTab, SettingDefinitionItem } from 'obsidian';
 
 export interface ClickUpSettings {
 	tokenSecret: string;    // name of the secret in Obsidian's keychain, not the token itself
@@ -21,7 +21,17 @@ export class ClickUpSettingsTab extends PluginSettingTab {
 			{
 				name: 'Mirror note',
 				desc: 'Path of the note that receives your ClickUp tasks, relative to the vault root. It is rewritten on every update.',
-				control: { type: 'text', key: 'notePath' },
+				control: {
+					type: 'text',
+					key: 'notePath',
+					placeholder: 'ClickUp.md',
+					validate: (value) => {
+						if (value.trim() === '') { return 'Enter a path for the mirror note.'; }
+						if (!value.endsWith('.md')) { return 'The path must end with .md.'; }
+						if (this.app.vault.getFolderByPath(normalizePath(value))) { return 'This path is a folder.'; }
+						return undefined;
+					},
+				},
 			},
 		];
 	}
