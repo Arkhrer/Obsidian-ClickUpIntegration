@@ -2,6 +2,7 @@ export interface ClickUpStatus {
 	status: string;
 	type: string;
 	color: string;
+	orderindex: number;
 }
 
 export interface ClickUpTask {

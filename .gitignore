@@ -15,9 +15,8 @@ main.js
 data.json
 
 # test vault: Obsidian rewrites its config, and the generated note holds real data
-test-vault/.obsidian
-test-vault/.trash
-test-vault/ClickUp.md
+test-vault/*
+!test-vault/README.md
 
 # local API experiments
 *.local.json
